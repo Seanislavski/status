@@ -1,0 +1,43 @@
+.latestTweets #twitter-widget-0 .customisable-border {
+	border:0;
+}
+.latestTweets #twitter-widget-0 .timeline-header.customisable-border {
+	display: none;
+}
+.latestTweets #twitter-widget-0 img.u-photo.avatar {
+	display: none;
+}
+.latestTweets #twitter-widget-0 span.full-name {
+	display: none;
+}
+.latestTweets #twitter-widget-0 span.p-nickname {
+	position: relative;
+	left: -37px;
+}
+.latestTweets #twitter-widget-0 time.dt-updated {
+	display: none;
+}
+.latestTweets #twitter-widget-0 .retweet-credit {
+	display: none;
+}
+.latestTweets #twitter-widget-0 .footer.customisable-border {
+	display: none;
+}
+.latestTweets #twitter-widget-0 span.p-nickname {
+	color: black;
+}
+.latestTweets #twitter-widget-0 .var-narrow .tweet {
+	padding: 0 8px 11px 8px;
+}
+.latestTweets #twitter-widget-0 a.profile.customisable.h-card, a.hashtag.customisable, a.link.customisable {
+	color: #9e242c;
+}
+.latestTweets #twitter-widget-0 button.load-more.customisable {
+	display: none;
+}
+.latestTweets #twitter-widget-0 .timeline-footer {
+	display: none;
+}
+.latestTweets #twitter-widget-0 img.autosized-media {
+display: none;
+}

@@ -1,0 +1,21 @@
+{
+    "status": {
+        "external": {
+            "OWA": "Up",
+            "Outlook": "Up",
+            "Website_&_Portals": "Up",
+            "VPN/Network_Access": "Up"
+        },
+        "internal": {
+            "OWA": "Up",
+            "Outlook": "Up",
+            "Active_Sync_Devices": "Up",
+            "Email_Flow_&_Delivery": {
+                "Outbound": "Up",
+                "Inbound": "Up"
+            },
+            "Network Access": "Up",
+            "Internet Access": "Up"
+        }
+    }
+}
