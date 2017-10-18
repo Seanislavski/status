@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<form action="create_test.php" method="post">
+<form action="db_update.php" method="post">
 
 <table class="table">
 
@@ -34,7 +34,6 @@
                 <?php
                     get_status(1);
                  ?>
-
             </td>
             <td>
                 <input type="text" name="ETA-OWA" id="ETA-OWA" placeholder="
@@ -178,7 +177,6 @@
         <tr>
             <td>OWA (webmail)</td>
             <td class="text-center">
-                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
                 <?php
                     get_status(7);
                  ?>
@@ -314,7 +312,15 @@
         </tr>
     </tbody>
 </table>
-<input type="submit" name="save" value="Save">
+<?php
+global $status;
+echo 'Status: '      . $_POST['NU-CRMi'];
+// echo 'ID: '          . $_POST['id'];
+// echo 'ETA: '         . $_POST["ETA"];
+// echo 'Next Update: ' . $_POST["next_update"];
+ ?>
+<input type="submit" value="Save">
 </form>
 </body>
 </html>
+<?php $connection->close();  ?>

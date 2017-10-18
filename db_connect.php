@@ -18,4 +18,8 @@
             if(!$result) {
                 die("Database query failed.");
             }
+            if($connection->connect_error){
+                die("Connection failed: " . $connection->connect_error);
+            }
+        echo "Connected Successfully ";
 ?>

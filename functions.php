@@ -7,6 +7,19 @@ function string_length($string){
     }
 }
 
+function get_status($id) {
+    global $service;
+    global $connection;
+    $service = mysqli_fetch_assoc(mysqli_query($connection, "SELECT * FROM status WHERE id = {$id}"));
+                    $firstPart = "<input type=\"checkbox\" ";
+                    $lastPart = "data-toggle=\"toggle\" name=\"status$id\">";
+                    if($service["status"] != 0){
+                        echo $firstPart . "checked " . $lastPart;
+                    } else {
+                        echo $firstPart . $lastPart;
+                    };
+}
+
 function get_eta() {
     global $service;
     global $connection;
@@ -32,20 +45,5 @@ function get_next_update() {
         echo $value;
     };
 }
-
-function get_status($id) {
-    global $service;
-    global $connection;
-    $service = mysqli_fetch_assoc(mysqli_query($connection, "SELECT * FROM status WHERE id = {$id}"));
-                    $firstPart = "<input type=\"checkbox\" ";
-                    $lastPart = "data-toggle=\"toggle\">";
-                    if($service["status"] != 0){
-                        echo $firstPart . "checked " . $lastPart;
-                    } else {
-                        echo $firstPart . $lastPart;
-                    };
-}
-
-
 
 ?>
