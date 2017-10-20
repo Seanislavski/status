@@ -1,4 +1,4 @@
-<?php require_once("./db_connect.php"); ?>
+<?php require_once("./db_connect.php"); //1 ?>
 <?php require_once("./functions.php"); ?>
 
 <!DOCTYPE html>
@@ -11,35 +11,65 @@
 <?php
 global $status;
 global $connection;
-        $query = "";
-        $query .=  "UPDATE status SET ";
-        $i = 1;
-            ;
-        // if (isset($_POST['status']) && $_POST['status'] == 'true') {
-        // echo "HALALOO";// Then insert something into the database as normal
-        // } else {
-        //     echo "HUBUBUB";
-        // };
+
+if ($connection->connect_errno) {
+    echo "Failed to connect to MySQL: (" . $connection->connect_errno . ") " . $connection->connect_error;
+};
 
 foreach ($_POST as $a => $c) {
+    ?> <br \> <?php
     echo 'a: ' . $a;
     ?><br \><?php
-    echo 'c: ' . $c;
-    ?><br \><?php //here we go
-    foreach($_POST as $q => $w){
-    if ($w == "on"){
-        $query .= " status = 1";
-    } else {
-        $query .= " status = 0";
+    if ($c != 'on' && $c !== 0){
+        $f = $c;
+    }  else {
+        echo 'c: ' . $c;
     }
-    $query .= " WHERE id = {$i};";
-    $result = mysqli_query($connection, $query);
-    if ($result) {
-    echo "Success!";
-    } else {
-        die("Database query failed. " . mysqli_error($connection) . $connection->connect_error);
+    ?><br \><?php //here we go
+echo '$_POST: ';
+print_r($_POST); //displays a long string
+        ?><br \><?php
+        $i = 1;
+    echo 'Affected Rows: ';
+    echo mysqli_affected_rows($connection);
+    ?><br \><?php
+    if (mysqli_affected_rows($connection) >= 0) //if there is a change
+    { //execute this query
+        $w = "";
+        $q = "";
+        foreach($_POST as $q => $w){
+            $query = "";
+            $query .=  "UPDATE status SET ";
+            if ($w != '' && $i <= 12 && $i > 0){
+                $query .= " status=1";
+echo "HERE BELOW \|/";
+echo ' (ID #' . $i . ')';
+        ?><br \><?php
+            } else {
+                $query .= " status=0";
+            }
+            $query .= " WHERE id={$i};";
+            $i++;
+    echo $query;
+    echo '<br>';
+            $result = mysqli_query($connection, $query);
+            $query='';
         }
-    }}
+    } else {
+        echo 'NO CHANGE! ';
+    }
+
+    ?><br \><?php
+
+    if (!$result) {
+    die("Database query failed. " . mysqli_error($connection) . $connection->connect_error);
+    } else {
+            // $result = mysqli_query($connection, $query);
+        echo "Success!";
+        }
+    }
+    ?> <br \> <?php
+    // echo $i;
 // echo $_POST['status' . $id];
 //         $query =  "UPDATE status SET ";
 //         $query .= "status = " . $_POST['status' . $id];
@@ -119,5 +149,9 @@ foreach ($_POST as $a => $c) {
  ?>
 
 </body>
-<?php require_once("./db_close.php"); ?>
+<!-- <?php  //release return data
+    $i = 0;
+    mysqli_free_result($result);
+ ?> -->
 </html>
+<?php require_once("./db_close.php"); //5 ?>

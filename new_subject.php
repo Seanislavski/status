@@ -314,7 +314,7 @@
 </table>
 <?php
 global $status;
-echo 'Status: '      . $_POST['NU-CRMi'];
+// echo 'Status: '      . $_POST['NU-CRMi'];
 // echo 'ID: '          . $_POST['id'];
 // echo 'ETA: '         . $_POST["ETA"];
 // echo 'Next Update: ' . $_POST["next_update"];
