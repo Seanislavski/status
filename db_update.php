@@ -15,46 +15,53 @@ global $connection;
 if ($connection->connect_errno) {
     echo "Failed to connect to MySQL: (" . $connection->connect_errno . ") " . $connection->connect_error;
 };
+// print_r($_POST)['id']; //displays a long string
+    $i = 1;
+
+require_once("./set_vars.php");
+
+
 
 foreach ($_POST as $a => $c) {
+
+    echo 'ID: ' . $i;
     ?> <br \> <?php
-    echo 'a: ' . $a;
-    ?><br \><?php
-    if ($c != 'on' && $c !== 0){
-        $f = $c;
-    }  else {
-        echo 'c: ' . $c;
-    }
+    echo 'Row: ' . $a;
     ?><br \><?php //here we go
-echo '$_POST: ';
-print_r($_POST); //displays a long string
-        ?><br \><?php
-        $i = 1;
+
     echo 'Affected Rows: ';
     echo mysqli_affected_rows($connection);
     ?><br \><?php
+    // print_r($connection);
     if (mysqli_affected_rows($connection) >= 0) //if there is a change
     { //execute this query
         $w = "";
         $q = "";
-        foreach($_POST as $q => $w){
+        // foreach($_POST as $q => $w){
+            // echo $w;
+
+            // switch($w){
+                // case 'on':
+                    // echo $query;
+                    //do something
+                // break;
+            // }
             $query = "";
             $query .=  "UPDATE status SET ";
             if ($w != '' && $i <= 12 && $i > 0){
                 $query .= " status=1";
-echo "HERE BELOW \|/";
+echo "HERE ->";
 echo ' (ID #' . $i . ')';
-        ?><br \><?php
             } else {
                 $query .= " status=0";
             }
             $query .= " WHERE id={$i};";
             $i++;
-    echo $query;
-    echo '<br>';
+    // echo $query;
+    // echo '<br>';
             $result = mysqli_query($connection, $query);
             $query='';
-        }
+
     } else {
         echo 'NO CHANGE! ';
     }
@@ -66,6 +73,7 @@ echo ' (ID #' . $i . ')';
     } else {
             // $result = mysqli_query($connection, $query);
         echo "Success!";
+        ?> <br \> <?php
         }
     }
     ?> <br \> <?php
