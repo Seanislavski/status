@@ -36,14 +36,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-OWA" id="ETA-OWA" placeholder="
+                <input type="text" name="ETAOWA" id="ETAOWA" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-OWA" id="NU-OWA" placeholder="
+                <input type="text" name="NUOWA" id="NUOWA" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -58,14 +58,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-ActiveSync" id="ETA-ActiveSync" placeholder="
+                <input type="text" name="ETAActiveSync" id="ETAActiveSync" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-ActiveSync" id="NU-ActiveSync" placeholder="
+                <input type="text" name="NUActiveSync" id="NUActiveSync" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -80,14 +80,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-Sites" id="ETA-Sites" placeholder="
+                <input type="text" name="ETASites" id="ETASites" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-Sites" id="NU-Sites" placeholder="
+                <input type="text" name="NUSites" id="NUSites" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -103,14 +103,14 @@
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETA-VPN" id="ETA-VPN" placeholder="
+                <input type="text" name="ETAVPN" id="ETAVPN" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-VPN" id="NU-VPN" placeholder="
+                <input type="text" name="NUVPN" id="NUVPN" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -126,14 +126,14 @@
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETA-CRM" id="ETA-CRM" placeholder="
+                <input type="text" name="ETACRM" id="ETACRM" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-CRM" id="NU-CRM" placeholder="
+                <input type="text" name="NUCRM" id="NUCRM" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -160,14 +160,14 @@
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETA-Outlook" id="ETA-Outlook" placeholder="
+                <input type="text" name="ETAOutlook" id="ETAOutlook" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-Outlook" id="NU-Outlook" placeholder="
+                <input type="text" name="NUOutlook" id="NUOutlook" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -182,14 +182,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-iOWA" id="ETA-iOWA" placeholder="
+                <input type="text" name="ETAiOWA" id="ETAiOWA" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-iOWA" id="NU-iOWA" placeholder="
+                <input type="text" name="NUiOWA" id="NUiOWA" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -205,14 +205,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-iAS" id="ETA-iAS" placeholder="
+                <input type="text" name="ETAiAS" id="ETAiAS" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-iAS" id="NU-iAS" placeholder="
+                <input type="text" name="NUiAS" id="NUiAS" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -227,14 +227,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-NA" id="ETA-NA" placeholder="
+                <input type="text" name="ETANA" id="ETANA" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-NA" id="NU-NA" placeholder="
+                <input type="text" name="NUNA" id="NUNA" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -249,14 +249,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-IA" id="ETA-IA" placeholder="
+                <input type="text" name="ETAIA" id="ETAIA" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-IA" id="NU-IA" placeholder="
+                <input type="text" name="NUIA" id="NUIA" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -271,14 +271,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-CRMi" id="ETA-CRMi" placeholder="
+                <input type="text" name="ETACRMi" id="ETACRMi" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-CRMi" id="NU-CRMi" placeholder="
+                <input type="text" name="NUCRMi" id="NUCRMi" placeholder="
                 <?php
                     get_next_update();
                 ?>
@@ -293,14 +293,14 @@
                  ?>
             </td>
             <td>
-                <input type="text" name="ETA-iSites" id="ETA-iSites" placeholder="
+                <input type="text" name="ETAiSites" id="ETAiSites" placeholder="
                 <?php
                     get_eta();
                 ?>
                 ">
             </td>
             <td>
-                <input type="text" name="NU-iSites" id="NU-iSites" placeholder="
+                <input type="text" name="NUiSites" id="NUiSites" placeholder="
                 <?php
                     get_next_update();
                 ?>

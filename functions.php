@@ -46,4 +46,14 @@ function get_next_update() {
     };
 }
 
+function get_id(){
+    if ($id <= 3){
+        $nid = 1;
+    } elseif ($id > 3 && $id <=6) {
+        $nid = 2;
+    } else {
+        $nid = 3;
+    };
+}
+
 ?>

@@ -17,7 +17,7 @@ if ($connection->connect_errno) {
 };
 // print_r($_POST)['id']; //displays a long string
     $i = 1;
-
+    $b = 1;
 // require_once("./set_vars.php");
 
         ?><br \><?php
@@ -26,34 +26,48 @@ if ($connection->connect_errno) {
         ?><br \><?php
 
 foreach ($_POST as $a => $c) { //start foreach
-
+    ?><br \><?php
     echo 'ID: ' . $i;
     ?> <br \> <?php
+    echo 'ID group: ' . $b;
+    ?> <br \> <?php
     echo 'Row: ' . $a;
-    ?><br \><?php //here we go
     $ra = str_replace(["-", "–"], '', $a);
+    ?><br \><?php
+    echo 'ra: ' . $ra;
     ?><br \><?php //here we go
     $ftc = substr($ra, 0, 2);
     echo 'Substring first two characters: ' . $ftc;
     ?><br \><?php //here we go
     //Test create | Set-Vars dynamically
+    print_r($_POST[$ra]);//looking for ETAOWA (example) in POST
     if (isset($_POST[$ra])) {
         $test = $_POST[$ra];
         echo 'test: ' . $test;
         ?><br \><?php
         echo '$ra' . ': ';
         echo $ra;
+        ?><br \><?php
         $query = "";
-        $query .=  "UPDATE $ra SET ";
+        $query .=  "UPDATE status SET ";
         if ($ftc == 'ET'){
-            $query .=  "ETA = $_POST[$ra]";
+            $query .=  "ETA = '$_POST[$ra]' ";
         } elseif($ftc == 'NU') {
-            $query .= "NU = $_POST[$ra]";
+            $query .= "next_update = '$_POST[$ra]' ";
+        } elseif($ftc == 'st') {
+            if($_POST[$ra] === 'on'){
+                $statProxy = 1;
+            } else {
+                $statProxy = 0;
+            }
+            $query .= "status = $statProxy ";//coming out as 'on' needs to be 1
         } else {
-            $query .= "status" . $i . " = $_POST[$ra]";
+            $query .= "status = '$_POST[$ra]' ";
+            //
         }
-        $query .=  "WHERE id={$i}";
+        $query .=  "WHERE id=$b;";
         $result = mysqli_query($connection, $query);
+        echo 'QUERY: ' . $query;
         $query = '';
     } else {
         echo $a . ' ELSE';
@@ -61,6 +75,11 @@ foreach ($_POST as $a => $c) { //start foreach
         $ra = '';
     }//end
     ?><br \><?php
+    echo 'QUERY: ' . $query;
+    ?><br \><?php
+    echo 'ra: ' . $ra;
+    ?><br \><?php
+    echo "Result: ";
     print_r($result);
     ?><br \><?php
     if (!$result) {
@@ -70,6 +89,11 @@ foreach ($_POST as $a => $c) { //start foreach
         echo "Successfully Submitted Query";
         ?> <br \> <?php
         } //end else
+    if (3 % ($i - 1 //this only fixes the first query change
+        //stop 'division by 0' error here with if statement?
+        ) !=0){
+        $b++;
+    }
     $i++;
 } //end foreach
 
