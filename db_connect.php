@@ -3,6 +3,7 @@
     $dbuser = "sean_acls";
     $dbpass = "secretpassword";
     $dbname = "acls";
+    // $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
     $connection = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
     //Test if connection occurred
     if(mysqli_connect_errno()) {

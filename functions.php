@@ -1,4 +1,5 @@
 <?php
+    global $connection;
 
 function string_length($string){
     $maxlength = 130;
@@ -7,17 +8,39 @@ function string_length($string){
     }
 }
 
-function get_status($id) {
+function get_status() {
     global $service;
     global $connection;
-    $service = mysqli_fetch_assoc(mysqli_query($connection, "SELECT * FROM status WHERE id = {$id}"));
-                    $firstPart = "<input type=\"checkbox\" ";
-                    $lastPart = "data-toggle=\"toggle\" name=\"status$id\">";
-                    if($service["status"] != 0){
-                        echo $firstPart . "checked " . $lastPart;
-                    } else {
-                        echo $firstPart . $lastPart;
-                    };
+    global $b;
+    echo $b;
+    $quer = "SELECT status FROM status WHERE id = {$b}";
+    $sql = mysqli_real_escape_string($connection, $quer);
+        $result = mysqli_query($connection, $sql);
+        $service = mysqli_fetch_assoc($sql);
+
+    if($connection->connect_errno) {
+        $firstPart = "<input type=\"checkbox\" ";
+        $lastPart = "data-toggle=\"toggle\" name=\"status$b\">";
+
+        if($service["status"] != 0){ //if on
+            echo $firstPart . "checked " . $lastPart;
+
+        } else { //if off
+            echo $firstPart . $lastPart;
+        };
+    } else {
+        //?? somehow let me know
+        echo 'HERE LIES THINE PROBLEM';
+        ?><br \><?php
+        print_r($connection);
+        ?><br \><?php
+        echo $queryTest;
+        ?><br \><?php
+
+    }
+    // print_r($result);
+
+
 }
 
 function get_eta() {
@@ -46,14 +69,5 @@ function get_next_update() {
     };
 }
 
-function get_id(){
-    if ($id <= 3){
-        $nid = 1;
-    } elseif ($id > 3 && $id <=6) {
-        $nid = 2;
-    } else {
-        $nid = 3;
-    };
-}
 
 ?>

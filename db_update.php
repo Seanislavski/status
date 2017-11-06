@@ -15,58 +15,64 @@ global $connection;
 if ($connection->connect_errno) {
     echo "Failed to connect to MySQL: (" . $connection->connect_errno . ") " . $connection->connect_error;
 };
-// print_r($_POST)['id']; //displays a long string
     $i = 1;
     $b = 1;
-// require_once("./set_vars.php");
-
         ?><br \><?php
-
         echo 'mysqli_affected_rows is ' . mysqli_affected_rows($connection);
         ?><br \><?php
 
 foreach ($_POST as $a => $c) { //start foreach
-    ?><br \><?php
-    echo 'ID: ' . $i;
+    ?><hr \><?php
+    echo '$a: ' . $a;
+        ?> <br \> <?php
+    echo '$c: ' . $c;
     ?> <br \> <?php
-    echo 'ID group: ' . $b;
+    echo '$i: ' . $i;
     ?> <br \> <?php
-    echo 'Row: ' . $a;
+    echo '$b: ' . $b;
     $ra = str_replace(["-", "–"], '', $a);
-    ?><br \><?php
-    echo 'ra: ' . $ra;
     ?><br \><?php //here we go
     $ftc = substr($ra, 0, 2);
-    echo 'Substring first two characters: ' . $ftc;
-    ?><br \><?php //here we go
-    //Test create | Set-Vars dynamically
-    print_r($_POST[$ra]);//looking for ETAOWA (example) in POST
+    echo '$ftc: ' . $ftc;//Substring first two characters
+    // print_r($_POST[$ra]);//looking for ETAOWA (example) in POST
+    ?><br \><?php
     if (isset($_POST[$ra])) {
         $test = $_POST[$ra];
+        if($test === ''){
+            echo 'test is nuffin';
+        }
         echo 'test: ' . $test;
         ?><br \><?php
         echo '$ra' . ': ';
         echo $ra;
-        ?><br \><?php
         $query = "";
         $query .=  "UPDATE status SET ";
         if ($ftc == 'ET'){
             $query .=  "ETA = '$_POST[$ra]' ";
+            ?><br \><div class="gray"><?php
+            echo 'ETA';
+            ?></div><?php
         } elseif($ftc == 'NU') {
             $query .= "next_update = '$_POST[$ra]' ";
+            ?><br \><?php
+            echo 'NEXT_UPDATE';
         } elseif($ftc == 'st') {
+            ?><br \><?php
+            echo 'STATUS';
             if($_POST[$ra] === 'on'){
                 $statProxy = 1;
             } else {
                 $statProxy = 0;
             }
-            $query .= "status = $statProxy ";//coming out as 'on' needs to be 1
+            $query .= "status = $statProxy ";
         } else {
-            $query .= "status = '$_POST[$ra]' ";
+            echo 'WE ARE HERE NOW';
+            // $query .= "status = '$_POST[$ra]' ";
             //
         }
         $query .=  "WHERE id=$b;";
         $result = mysqli_query($connection, $query);
+        ?><br \><?php
         echo 'QUERY: ' . $query;
         $query = '';
     } else {
@@ -75,25 +81,20 @@ foreach ($_POST as $a => $c) { //start foreach
         $ra = '';
     }//end
     ?><br \><?php
-    echo 'QUERY: ' . $query;
-    ?><br \><?php
-    echo 'ra: ' . $ra;
-    ?><br \><?php
-    echo "Result: ";
-    print_r($result);
-    ?><br \><?php
     if (!$result) {
     die("Database query failed. " . mysqli_error($connection) . $connection->connect_error);
     } else { //end if, start else
-        $result = mysqli_query($connection, $query);
-        echo "Successfully Submitted Query";
-        ?> <br \> <?php
-        } //end else
-    if (3 % ($i - 1 //this only fixes the first query change
-        //stop 'division by 0' error here with if statement?
-        ) !=0){
-        $b++;
-    }
+        if ($query != ''){
+            $result = mysqli_query($connection, $query);
+            echo "Successfully Submitted Query";
+        } //end if
+        if($ftc == 'NU'){
+            $b++;
+        } //end if
+    } //end else
+    // if ($i % 3 === 0){
+        // $b++;
+    // } // end if
     $i++;
 } //end foreach
 
@@ -106,7 +107,9 @@ foreach ($_POST as $a => $c) { //start foreach
 </body>
 <?php  //release return data
     $i = 0;
-    mysqli_free_result($result);
+    if($result != ''){
+        mysqli_free_result($result);
+    }
  ?>
 </html>
 <?php require_once("./db_close.php"); //5 ?>

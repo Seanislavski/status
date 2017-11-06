@@ -32,7 +32,8 @@ td {
 
 .gray {
   background-color: lightgray;
-  border-top: 3px solid black; }
+  border-top: 3px solid black;
+  color: red; }
 
 .container.header-area {
   background: url("../img/header-bg.png") no-repeat top center; }

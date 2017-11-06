@@ -32,7 +32,9 @@
             <td>OWA (webmail)</td>
             <td class="text-center Status-OWA">
                 <?php
-                    get_status(1);
+                    global $b;
+                    get_status();
+                    echo 'test ' . $b;
                  ?>
             </td>
             <td>
@@ -54,7 +56,7 @@
             <td>ActiveSync (Mobile Devices)</td>
             <td class="text-center">
                 <?php
-                    get_status(2);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -76,7 +78,7 @@
             <td>ACLS Website & Portal Websites</td>
             <td class="text-center">
                 <?php
-                    get_status(3);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -98,7 +100,7 @@
             <td>VPN/Remote Network Access</td>
             <td class="text-center">
                 <?php
-                    get_status(4);
+                    get_status();
                  ?>
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
@@ -121,7 +123,7 @@
             <td>crm.acls.org</td>
             <td class="text-center">
                 <?php
-                    get_status(5);
+                    get_status();
                  ?>
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
@@ -155,7 +157,7 @@
             <td>Outlook Email</td>
             <td class="text-center">
                 <?php
-                    get_status(6);
+                    get_status();
                  ?>
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
@@ -178,7 +180,7 @@
             <td>OWA (webmail)</td>
             <td class="text-center">
                 <?php
-                    get_status(7);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -201,7 +203,7 @@
             <td>ActiveSync (Mobile Devices)</td>
             <td class="text-center">
                 <?php
-                    get_status(8);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -223,7 +225,7 @@
             <td>Network Access</td>
             <td class="text-center">
                 <?php
-                    get_status(9);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -245,7 +247,7 @@
             <td>Internet Access</td>
             <td class="text-center">
                 <?php
-                    get_status(10);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -267,7 +269,7 @@
             <td>crminternal.acls.org</td>
             <td class="text-center">
                 <?php
-                    get_status(11);
+                    get_status();
                  ?>
             </td>
             <td>
@@ -289,7 +291,7 @@
             <td>ACLS Website & Portal Websites</td>
             <td class="text-center">
                 <?php
-                    get_status(12);
+                    get_status();
                  ?>
             </td>
             <td>
