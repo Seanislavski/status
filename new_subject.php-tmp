@@ -1,8 +1,6 @@
-<?php require_once("./db_connect.php"); ?>
-<?php require_once("./functions.php"); ?>
-<?php require_once("./status_ns.php"); ?>
-
-
+<?php require_once ("./db_connect.php");?>
+<?php require_once ("./functions.php");?>
+<?php require_once ("./status_ns.php");?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +19,7 @@
 global $link;
 global $b;
 mysqli_ping($link);
-?> <!-- end -->
+?><!-- end -->
 
 <table class="table">
 
@@ -38,114 +36,114 @@ mysqli_ping($link);
         <tr>
             <td>OWA (webmail)</td>
             <td class="text-center Status-OWA">
-                <?php
-                    print_r($_POST['ETA']);
-                    // get_status();
-                 ?>
-            </td>
+<?php
+print_r($_POST['ETA']);
+// get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAOWA" id="ETAOWA" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUOWA" id="NUOWA" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>ActiveSync (Mobile Devices)</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAActiveSync" id="ETAActiveSync" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUActiveSync" id="NUActiveSync" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>ACLS Website & Portal Websites</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETASites" id="ETASites" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUSites" id="NUSites" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>VPN/Remote Network Access</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+<?php
+get_status();
+?>
+<!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
                 <input type="text" name="ETAVPN" id="ETAVPN" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUVPN" id="NUVPN" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>crm.acls.org</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+<?php
+get_status();
+?>
+<!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
                 <input type="text" name="ETACRM" id="ETACRM" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUCRM" id="NUCRM" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
 
@@ -162,157 +160,157 @@ mysqli_ping($link);
         <tr>
             <td>Outlook Email</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+<?php
+get_status();
+?>
+<!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
                 <input type="text" name="ETAOutlook" id="ETAOutlook" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUOutlook" id="NUOutlook" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>OWA (webmail)</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAiOWA" id="ETAiOWA" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUiOWA" id="NUiOWA" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
 
         </tr>
         <tr>
             <td>ActiveSync (Mobile Devices)</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAiAS" id="ETAiAS" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUiAS" id="NUiAS" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>Network Access</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETANA" id="ETANA" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUNA" id="NUNA" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>Internet Access</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAIA" id="ETAIA" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUIA" id="NUIA" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>crminternal.acls.org</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETACRMi" id="ETACRMi" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUCRMi" id="NUCRMi" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
             <td>ACLS Website & Portal Websites</td>
             <td class="text-center">
-                <?php
-                    get_status();
-                 ?>
-            </td>
+<?php
+get_status();
+?>
+</td>
             <td>
                 <input type="text" name="ETAiSites" id="ETAiSites" placeholder="
-                <?php
-                    get_eta();
-                ?>
-                ">
+<?php
+get_eta();
+?>
+">
             </td>
             <td>
                 <input type="text" name="NUiSites" id="NUiSites" placeholder="
-                <?php
-                    get_next_update();
-                ?>
-                ">
+<?php
+get_next_update();
+?>
+">
             </td>
         </tr>
         <tr>
@@ -326,9 +324,9 @@ global $status;
 // echo 'ID: '          . $_POST['id'];
 // echo 'ETA: '         . $_POST["ETA"];
 // echo 'Next Update: ' . $_POST["next_update"];
- ?>
+?>
 <input type="submit" value="Save">
 </form>
 </body>
 </html>
-<?php $link->close();  ?>
+<?php $link->close();?>
