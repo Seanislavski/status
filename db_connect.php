@@ -4,7 +4,7 @@
     $dbpass = "secretpassword";
     $dbname = "acls";
     // $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-    $link = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+    $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
     //Test if connection occurred
     if(mysqli_connect_errno()) {
         die("Database connection failed: " .
@@ -12,11 +12,13 @@
             " (" . mysqli_connect_errno() . ")"
         );
     }
-
-            $query = "SELECT * FROM status";
-            $result = mysqli_query($link, $query);
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+            $query = "SELECT * FROM server_status";
+            $result = mysqli_query($conn, $query);
             //test if there was a query error
-            if($link == false){
+            if($conn == false){
                 //try to reconnect
                 echo "hrumph.";
             } else {
@@ -27,8 +29,8 @@
             } else {
                 $test .= "Connected Successfully";
             }
-            if($link->connect_error){
-                die("Connection failed: " . $link->connect_error);
+            if($conn->connect_error){
+                die("Connection failed: " . $conn->connect_error);
             } else {
                 $test .= "Connected Successfully";
             }

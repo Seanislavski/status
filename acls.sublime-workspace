@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"MYS",
+				"MYSQLI_STORE_RESULT"
+			],
+			[
 				"backg",
 				"background-color"
 			],
@@ -19,17 +23,25 @@
 			"file": "new_subject.php",
 			"settings":
 			{
-				"buffer_size": 9348,
+				"buffer_size": 9871,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "db_update.php",
+			"file": "js/bootstrap-switch.js",
 			"settings":
 			{
-				"buffer_size": 3124,
+				"buffer_size": 18373,
 				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "db_connect.php",
+			"settings":
+			{
+				"buffer_size": 1232,
 				"line_ending": "Windows"
 			}
 		},
@@ -37,17 +49,54 @@
 			"file": "functions.php",
 			"settings":
 			{
-				"buffer_size": 2132,
+				"buffer_size": 2687,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
 		{
-			"file": "db_connect.php",
+			"file": "status/update_status.php",
 			"settings":
 			{
-				"buffer_size": 1158,
+				"buffer_size": 1207,
 				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "db_update.php",
+			"settings":
+			{
+				"buffer_size": 3317,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php require_once(\"./db_connect.php\"); //1 ?>\n<?php require_once(\"./functions.php\"); ?>\n\n<!DOCTYPE html>\n<html>\n<head>\n    <title>Processor</title>\n</head>\n<body>\n    <h2>External Services</h2>\n<?php\nglobal $status, $link, $b, $ftc, $num, $i;\nif ($link->connect_errno) {\n    echo \"Failed to connect to MySQL: (\" . $link->connect_errno . \") \" . $link->connect_error;\n};\n    echo '<br> mysqli_affected_rows is ' . mysqli_affected_rows($link);\n\n    $c = '';\n// while ($row){\nforeach ($_POST as $a => $c) { //start foreach\n    global $b, $i;\n    ?><hr \\><?php\n    echo '$num: ' . $num . '<br>';\n    echo '$a: ' . $a;\n        ?> <br \\> <?php\n    echo '$c: <pre>' . $c . '</pre>';\n    ?> <br \\> <?php\n    echo '$i: ' . $i;\n    $ra = str_replace([\"-\", \"–\"], '', $a);\n    ?><br \\><?php //here we go\n    $ftc = substr($ra, 0, 2);\n    $substr = (substr($a, 0, 2));\n    if ($substr == 'ET'){\n        $a = 'ETA';\n    } elseif($substr = 'ne'){\n        $a = 'next_update';\n    } elseif($substr = 'st'){\n        $a = 'status';\n    } else {\n        echo 'ERROR ALERT!';\n    }\n    echo '$ftc: ' . $ftc . '<br>';//Substring first two characters\n    echo '$substr: ' . $substr . '<br>';\n    ?><br \\><?php\n    if (trim($c) != 'N/A'){\n        if (isset($_POST[$ra])) {\n            $query = \"\";\n            $query .=  \"UPDATE server_status SET \";\n            $post = mysqli_real_escape_string($link, $_POST[$ra]);\n            $safe = trim($post);\n            if ($ftc == 'ET'){\n                $query .=  \"ETA = \\\"$safe\\\" \";\n                ?><br \\><div class=\"gray\"><?php\n                echo 'ETA';\n            } elseif($ftc == 'NU') {\n                $query .= \"next_update = '$safe'\";\n            } elseif($ftc == 'st') {\n                if($_POST[$ra] === 'on'){\n                    $statProxy = '\\'up\\'';\n                } else {\n                    $statProxy = '\\'down\\'';\n                }\n                $query .= \"status = $statProxy \";\n            } else {\n                echo 'WE ARE HERE NOW';\n            }\n            echo '<br>';\n            print_r($_POST);\n            echo '<br>';\n            $query .=  \"WHERE id=$i;\";\n            $result = mysqli_query($link, $query);\n            ?><br \\><?php\n            echo 'QUERY: ' . $query . '<br>';\n            ?><br \\><?php\n            // echo '$statProxy ' . $statProxy;\n            $query = '';\n        } else {\n            echo $a . ' ELSE';\n            $ra = $_POST[$a];\n            $ra = '';\n        }//end\n    }//end N/A if\n    else {\n        $c = trim($c);\n        echo \"query: \" . $query;\n        echo '<br> $i: ' . $i;\n        $query = \"UPDATE server_status SET $a = '$c' WHERE id=$i\";\n        echo \"<br>query: \" . $query . ' ELSE <-- <br>';\n    }\n    if (!$result) {\n    die(\"Database query failed. \" . mysqli_error($link) . $link->connect_error);\n    } else { //end if, start else\n        if ($query != ''){\n            $result = mysqli_query($link, $query);\n            echo 'Query: ' . $query . '<br>';\n            echo \"Successfully Submitted Query\";\n        } //end if\n    }//end else\n} //end foreach\n\n    ?> <br \\> <?php\n    unset($a);\n    unset($b);\n    unset($c);\n ?>\n<br \\>\n</body>\n<?php  //release return data\n    $i = 0;\n    if($result != 'false'){\n        mysqli_free_result($result);\n    }\n ?>\n</html>\n<?php require_once(\"./db_close.php\"); //5 ?>\n",
+			"settings":
+			{
+				"buffer_size": 3316,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\nrequire_once(\"./db_connect.php\");\nglobal $link, $b, $c;\n\n$sql = \"SELECT * FROM status\";\n$result = $link->query($sql);\n\nif ($result->num_rows > 0) {\n    $row = $result->fetch_array();\n    foreach ($row as $a => $c){\n        //output data of each row\n        while($row = $result->fetch_assoc()) {\n            foreach($row as $a){\n                // print_r($row);\n                $id = $row[\"id\"];\n                $st = $row[\"status\"];\n                $eta = $row[\"ETA\"];\n                $nu = $row[\"next_update\"];\n            };\n\n            echo 'ID: ' . $id . '<br>';\n            echo 'Status: ' . $st . '<br>';\n            echo 'ETA: ' . $eta . '<br>';\n            echo 'Next Update: ' . $nu . '<br>';\n        // $row = $result->fetch_assoc();\n        // echo '$a: ' . $a;\n        // echo '$c: ' . $c;\n        // echo 'ID: ' . $row['id'];\n        // echo 'Status: ' . $row['status'];\n        // echo 'ETA: ' . $row['ETA'];\n        // echo 'Next Update: ' . $row['next_update'];\n            echo 'variable \"row\": ';\n            print_r($row);\n            ?><br \\><?php\n            ?><br \\><?php\n\n\n            // echo 'Status ' . $st . ' ';\n            // echo \"id: \" . $row[\"id\"]. \" - ETA: \" . $row[\"ETA\"]. \" NU: \" . $row[\"next_update\"]. \"<br>\";\n            // echo $id[1];\n        }\n}\n// } else {\n//     echo \"0 results\";\n// }\n// print_r($row = $result->fetch_assoc());\n?><br \\><?php\n// print_r($row);\n// foreach($row as $a){\n            // echo $row[\"id\"];\n            // echo $row[\"status\"];\n            // echo $row[\"ETA\"];\n// };\n//         };\n// };\n// $link->close();\n\nforeach ($_POST as $a => $c) { //start foreach\n    $ftc = substr($ra, 0, 2);\n    if($_POST[$ra] === 'on'){\n        $statProxy = 1;\n    } else {\n        $statProxy = 0;\n    }\n    echo '$statProxy: ' . $statProxy;\n};\n};\n?>\n",
+			"file": "status_ns.php",
+			"file_size": 1871,
+			"file_write_time": 131550745752675975,
+			"settings":
+			{
+				"buffer_size": 1803,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\nfunction get_status($num) {\n    global $service, $link, $result, $ra, $ftc, $i;\n    $db_selected = mysqli_select_db($link, 'acls');\n    $t = $GLOBALS['b'];\n        $i = 1;\n            $b = 1;\n    // print_r($_POST);\n    // if ($result->num_rows > 0) {\n\n    $quer = \"SELECT status FROM status WHERE id = $num\";\n    if($quer){\n    $sql = mysqli_real_escape_string($link, $quer);\n    $safesql = $link->prepare($sql);\n    $result = mysqli_query($link , $sql);\n        $row = $result->fetch_assoc();//$result->fetch_assoc();\n    // mysqli::query($sql [$resultmode = MYSQLI_STORE_RESULT ], acls);\n    if(isset($row)){\n        echo '$row: ' ;\n        print_r($row);\n        echo '<br>';\n    }\n    }\n    if (isset($result)) {\n        global $i;\n        echo '$result: ' ;\n        print_r($result);\n        echo '<br>';\n        // foreach ($row as $a=>$c){\n        //     $b++;\n        // }\n    } else {\n        echo '$result: ' . $result;\n    }\n\n\n    $service = mysqli_fetch_assoc($result); //error\n    echo '<br>Service: ';\n    print_r($service);\n    echo '<br><br>';\n    // $row = mysqli_fetch_row($result);\n    // $total_records = $row[0];\n    // echo '$service = ' . $service;\n    // echo 'mysqli_fetch_assoc($sql) = ' . $service;\n    // var_dump($sql);\n    echo '$sql = ' . $sql;\n    ?><br \\><?php\n    echo '$b = ' . $b;\n    ?><br \\><?php\n    echo '$t = ' . $t;\n    ?><br \\><?php\n    echo '$ra = ' . $ra;\n    ?><br \\><?php\n    echo '$ftc = ' . $ftc . '<br>';\n    mysqli_free_result($result);\n    if($link == false){\n        echo \"Aw shit\"\n;    }\n    if($link->connect_error) {\n        echo 'HERE LIES THINE PROBLEM: ';\n        echo 'you\\'re hitting the else';\n        ?><br \\><?php\n        print_r($link);\n    } else {\n        $firstPart = \"<input type=\\\"checkbox\\\" \";\n        $lastPart = \"data-toggle=\\\"toggle\\\" name=\\\"status$b\\\">\";\n        echo $service[\"status\"] . \" foo\";\n        if($service[\"status\"] != 0){ //if on\n            echo $firstPart . \"checked \" . $lastPart;\n        } else { //if off\n            echo $firstPart . $lastPart;\n        };\n    }\n}",
+			"settings":
+			{
+				"buffer_size": 2058,
 				"line_ending": "Windows"
 			}
 		}
@@ -75,10 +124,14 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 111.0,
-		"last_filter": "Package Control: install pa",
+		"height": 86.0,
+		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"package control: list packages",
+				"Package Control: List Packages"
+			],
 			[
 				"Package Control: install pa",
 				"Package Control: Install Package"
@@ -116,7 +169,7 @@
 				"Package Control: Install Package"
 			]
 		],
-		"width": 538.0
+		"width": 594.0
 	},
 	"console":
 	{
@@ -139,15 +192,19 @@
 	"expanded_folders":
 	[
 		"/C/wamp/www/Sites",
-		"/C/wamp/www/Sites/style",
-		"/C/wamp/www/Sites/style/scss"
+		"/C/wamp/www/Sites/new",
+		"/C/wamp/www/Sites/new/Server Status",
+		"/C/wamp/www/Sites/public",
+		"/C/wamp/www/Sites/script",
+		"/C/wamp/www/Sites/status"
 	],
 	"file_history":
 	[
-		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/wamp/www/Sites/js/main.js",
 		"/C/wamp/www/Sites/db_connect.php",
-		"/C/wamp/www/Sites/db_close.php",
 		"/C/wamp/www/Sites/style/scss/style.scss",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/wamp/www/Sites/db_close.php",
 		"/C/wamp/www/Sites/style/style.css",
 		"/C/wamp/www/Sites/index.php",
 		"/C/Users/sean.rivis/Documents/WebDev/ACLS/css/main.css",
@@ -270,8 +327,7 @@
 		"/C/Users/sean.rivis/AppData/Roaming/Sublime Text 3/Packages/User/ColorPicker.sublime-settings",
 		"/C/Users/sean.rivis/AppData/Local/Temp/fz3temp-1/wp-config.php",
 		"/C/Users/sean.rivis/Documents/WebDev/crushedspirits/index.php",
-		"/C/Users/sean.rivis/Documents/WebDev/arcadia/arcadia_proj/quarters.rb",
-		"/C/Users/sean.rivis/Documents/WebDev/arcadia/arcadia_proj/q2.rb"
+		"/C/Users/sean.rivis/Documents/WebDev/arcadia/arcadia_proj/quarters.rb"
 	],
 	"find":
 	{
@@ -289,6 +345,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"QUERY",
+			"where id=",
+			"ELSE",
+			"ETA",
+			"$ra",
+			"select",
+			"$query",
+			"echo 'q",
+			"++",
+			"center",
+			"$c",
+			"$b",
+			"db_update.php",
+			"text-center",
+			"class=\"text-center\"",
+			"<td class=\"text-center\">",
+			"value",
+			"testing",
+			"connection",
+			"$b",
 			"queryTest",
 			"$b",
 			"mysqli_fetch_assoc(",
@@ -311,7 +387,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
@@ -320,15 +396,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9348,
+						"buffer_size": 9871,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								772,
-								807
+								637,
+								637
 							]
 						],
 						"settings":
@@ -359,25 +435,289 @@
 								{
 									"1":
 									[
-										769,
-										771
+										636,
+										637
 									]
 								},
 								"icon":
 								{
 									"1":
 									[
-										"Packages/BracketHighlighter/icons/tag.png",
-										"region.orangish"
+										"Packages/BracketHighlighter/icons/double_quote.png",
+										"region.greenish"
 									]
 								},
 								"open":
 								{
 									"1":
 									[
-										750,
-										752
+										613,
+										614
 									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"colorcode": true,
+							"history_list_is_closing": true,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "js/bootstrap-switch.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 18373,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6800,
+								6800
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "javascript"
+							},
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										6866,
+										6867
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										6710,
+										6711
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"colorcode": true,
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3751.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "db_connect.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1232,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "php"
+							},
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
 								},
 								"unmatched":
 								{
@@ -447,10 +787,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 360.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -460,20 +800,20 @@
 			"sheets":
 			[
 				{
-					"buffer": 1,
-					"file": "db_update.php",
+					"buffer": 3,
+					"file": "functions.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3124,
+						"buffer_size": 2687,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								489,
-								489
+								976,
+								976
 							]
 						],
 						"settings":
@@ -502,12 +842,27 @@
 							{
 								"close":
 								{
+									"1":
+									[
+										1083,
+										1084
+									]
 								},
 								"icon":
 								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/curly_bracket.png",
+										"region.purplish"
+									]
 								},
 								"open":
 								{
+									"1":
+									[
+										975,
+										976
+									]
 								},
 								"unmatched":
 								{
@@ -578,27 +933,27 @@
 							"word_wrap": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 320.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "functions.php",
+					"buffer": 4,
+					"file": "status/update_status.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2132,
+						"buffer_size": 1207,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								587,
-								587
+								2,
+								2
 							]
 						],
 						"settings":
@@ -627,27 +982,136 @@
 							{
 								"close":
 								{
-									"1":
-									[
-										1537,
-										1538
-									]
 								},
 								"icon":
 								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/curly_bracket.png",
-										"region.purplish"
-									]
 								},
 								"open":
 								{
-									"1":
-									[
-										212,
-										213
-									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"colorcode": true,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "db_update.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3317,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								3317
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "php"
+							},
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".#",
+									"selector": "text.html"
+								}
+							],
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
 								},
 								"unmatched":
 								{
@@ -721,73 +1185,47 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "db_connect.php",
+					"buffer": 6,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1158,
+						"buffer_size": 3316,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								319,
-								319
+								472,
+								472
 							]
 						],
 						"settings":
 						{
 							"WordCount":
 							{
-								"changes": -1,
+								"changes": 0,
+								"count": 0,
 								"modified": true,
 								"selection": true,
 								"status": -1,
 								"syntax": "php"
 							},
-							"auto_complete_triggers":
-							[
-								{
-									"characters": "<",
-									"selector": "text.html"
-								},
-								{
-									"characters": ".#",
-									"selector": "text.html"
-								}
-							],
 							"bracket_highlighter.busy": false,
 							"bracket_highlighter.locations":
 							{
 								"close":
 								{
-									"1":
-									[
-										464,
-										465
-									]
 								},
 								"icon":
 								{
-									"1":
-									[
-										"Packages/BracketHighlighter/icons/curly_bracket.png",
-										"region.purplish"
-									]
 								},
 								"open":
 								{
-									"1":
-									[
-										318,
-										319
-									]
 								},
 								"unmatched":
 								{
@@ -852,6 +1290,7 @@
 								"bh_single_quote_content"
 							],
 							"colorcode": true,
+							"default_dir": "C:\\wamp\\www\\Sites",
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -860,7 +1299,248 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "status_ns.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5,
+								5
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 0,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "php"
+							},
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"icon":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"colorcode": true,
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2058,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1536,
+								1536
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 0,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "php"
+							},
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										1535,
+										1536
+									]
+								},
+								"icon":
+								{
+									"1":
+									[
+										"Packages/BracketHighlighter/icons/double_quote.png",
+										"region.greenish"
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										1527,
+										1528
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content"
+							],
+							"colorcode": true,
+							"default_dir": "C:\\wamp\\www\\Sites",
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 406.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
 					"type": "text"
 				}
 			]
@@ -894,7 +1574,7 @@
 		"cols":
 		[
 			0.0,
-			0.453645833333,
+			0.5,
 			1.0
 		],
 		"rows":
@@ -913,6 +1593,10 @@
 		"height": 191.0
 	},
 	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.mdpopups":
 	{
 		"height": 0.0
 	},
@@ -961,8 +1645,8 @@
 	"show_minimap": true,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
-	"side_bar_width": 171.0,
+	"side_bar_visible": true,
+	"side_bar_width": 265.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

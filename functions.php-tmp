@@ -1,5 +1,63 @@
 <?php
-global $link, $b;
+global $conn, $b;
+
+function getDynamicData($column, $id) {
+	global $conn, $row, $get_data;
+	$query    = "SELECT $column FROM server_status WHERE id = $id";
+	$get_data = mysqli_query($conn, $query);
+	if (!$get_data) {
+		echo 'MySQL Error: '.mysqli_error($conn);
+		exit;
+	}
+	$row = mysqli_fetch_assoc($get_data);
+	// print_r($row[$column]);
+	return $row[$column];
+}
+
+function get_status($id) {
+	global $conn;
+	$dyndat = getDynamicData('status', $id);
+	// print_r(getDynamicData('status', $id));
+	$fp  = "<input type=\"radio\" ";
+	$lp  = " data-toggle=\"toggle\" name=\"status$id\" data-on-color=\"success\" data-off-color=\"danger\"> ";
+	$fp2 = "<input type=\"radio\" ";
+	$lp2 = " data-toggle=\"toggle\" name=\"status$id\">";
+	if ($dyndat == 'up') {
+		// getDynamicData('status', $id) == 'up'){
+		echo $fp."checked value=\"on\"".$lp.$fp2.$lp2;
+	} elseif ($dyndat == 'down') {//if down
+		echo $fp.$lp.$fp2."checked value=\"off\"".$lp2;
+	} else {
+		echo 'ERROR';
+	};
+}
+
+function updateStatus($input_name, $conn) {
+	$status = $_POST[$input_name];
+	if (substr($status, -2, -1) == 's') {
+		$lastchars = substr($status, -1);
+	} else {
+		$lastchars = substr($status, -2);
+	}
+	mysqli_query($conn, "UPDATE server_status SET status = \'$status\' WHERE id = $lastchars");
+}
+
+function get_eta($id) {
+	global $conn, $row, $get_data;
+	$ETA = getDynamicData('ETA', $id);
+	if ($ETA) {
+		$trimmed = trim($ETA);
+		$escaped = mysqli_real_escape_string($conn, $trimmed);
+		echo $escaped;
+	} else {
+		echo 'N/A';
+	}
+}
+
+function updateETA($id, $conn) {
+	$eta = get_eta($id);
+	mysqli_query($conn, "UPDATE server_status SET ETA = $eta WHERE id = $id");
+}
 
 function string_length($string) {
 	$maxlength = 130;
@@ -8,96 +66,39 @@ function string_length($string) {
 	}
 }
 
-function get_status() {
-	global $service, $link, $ra, $ftc, $b;
-	$db_selected = mysqli_select_db($link, 'acls');
-	$t           = $GLOBALS['b'];
-	$i           = 1;
-	$b           = 1;
+function loopstatus($conn) {
+	$get_data = mysqli_query($conn, "SELECT * FROM server_status");
+	while ($data = mysqli_fetch_array($get_data)) {
+		echo '
 
-	foreach ($_POST as $a => $c) {
-		$i++;
-	}
-	$quer = "SELECT status FROM status WHERE id = $i";
-	if ($quer) {
-		$sql = mysqli_real_escape_string($link, $quer);
-	}
-
-	$safesql = $link->prepare($sql);
-	$result  = mysqli_query($link, $quer);
-	// mysqli::query($sql [$resultmode = MYSQLI_STORE_RESULT ], acls);
-	print_r($result);
-	if (isset($result)) {
-		// echo $result . ' <-HERE IT IS (supposed to be)';
-		echo 'Hoo-Rah';
-	} else {
-		echo '$result: '.$result;
-	}
-	$service = mysqli_fetch_assoc($result);//error
-	// $row = mysqli_fetch_row($result);
-	// $total_records = $row[0];
-	// echo '$service = ' . $service;
-	// echo 'mysqli_fetch_assoc($sql) = ' . $service;
-	// var_dump($sql);
-	echo '$sql = '.$sql;
-	?><br \><?php
-	echo '$b = '.$b;
-	?><br \><?php
-	echo '$t = '.$t;
-	?><br \><?php
-	echo '$ra = '.$ra;
-	?><br \><?php
-	echo '$ftc = '.$ftc;
-	mysqli_free_result($result);
-	if ($link == false) {
-		echo "Aw shit"
-		;}
-	if ($link->connect_error) {
-		echo 'HERE LIES THINE PROBLEM: ';
-		echo 'you\'re hitting the else';
-		?><br \><?php
-		print_r($link);
-	} else {
-		$firstPart = "<input type=\"checkbox\" ";
-		$lastPart  = "data-toggle=\"toggle\" name=\"status$b\">";
-		if ($service["status"] != 0) {//if on
-			echo $firstPart."checked ".$lastPart;
-		} else {//if off
-			echo $firstPart.$lastPart;
-		};
+        ';
 	}
 }
 
-function get_eta() {
-	global $service, $link;
-	if (isset($service["ETA"])) {
-		$value_one = trim($service["ETA"]);
-		$value     = mysqli_real_escape_string($link, $value_one);
-		if (
-			!isset($value) || empty($value)) {
-			echo "N/A";
-		} else {
-			echo $value;
-		};
+function get_next_update($id) {
+	global $conn, $row, $get_data;
+	$NU = getDynamicData('next_update', $id);
+	if ($NU) {
+		$trimmed = trim($NU);
+		$escaped = mysqli_real_escape_string($conn, $trimmed);
+		echo $escaped;
 	} else {
-		echo "unset ETA";
+		echo 'N/A';
 	}
-}
 
-function get_next_update() {
-	global $service, $link;
-	if (isset($service["next_update"])) {
-		$value_one = trim($service["next_update"]);
-		$value     = mysqli_real_escape_string($link, $value_one);
-		if (
-			!isset($value) || empty($value)) {
-			echo "N/A";
-		} else {
-			echo $value;
-		};
-	} else {
-		echo "unset NU";
-	}
+	// global $service, $conn;
+	// if(isset($service["next_update"])){
+	// $value_one = trim($service["next_update"]);
+	// $value = mysqli_real_escape_string($conn, $value_one);
+	// if(
+	// !isset($value) || empty($value)) {
+	// echo "N/A";
+	// } else {
+	// echo $value;
+	// };
+	// } else {
+	// echo "unset NU";
+	// }
 }
 
 ?>

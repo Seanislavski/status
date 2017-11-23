@@ -9,95 +9,93 @@
 <body>
     <h1>External Services</h1>
 <?php
-global $status;
-global $link;
-global $b;
-global $ftc;
+global $status, $link, $b, $ftc, $num, $i;
 if ($link->connect_errno) {
     echo "Failed to connect to MySQL: (" . $link->connect_errno . ") " . $link->connect_error;
 };
-    $i = 1;
-    $b = 1;
-        ?><br \><?php
-        echo 'mysqli_affected_rows is ' . mysqli_affected_rows($link);
+    echo '<br> mysqli_affected_rows is ' . mysqli_affected_rows($link);
+    $c = '';
 
-
+// while ($row){
 foreach ($_POST as $a => $c) { //start foreach
-    global $b;
+    global $b, $i;
     ?><hr \><?php
+    echo '$num: ' . $num . '<br>';
     echo '$a: ' . $a;
         ?> <br \> <?php
-    echo '$c: ' . $c;
+    echo '$c: <pre>' . $c . '</pre>';
     ?> <br \> <?php
     echo '$i: ' . $i;
     $ra = str_replace(["-", "–"], '', $a);
     ?><br \><?php //here we go
     $ftc = substr($ra, 0, 2);
-    echo '$ftc: ' . $ftc;//Substring first two characters
-    // print_r($_POST[$ra]);//looking for ETAOWA (example) in POST
-    ?><br \><?php
-    if (isset($_POST[$ra])) {
-        $test = $_POST[$ra];
-        if($test === ''){
-            echo 'test is nuffin';
-        }
-        echo 'test: ' . $test;
-        ?><br \><?php
-        echo '$ra' . ': ';
-        echo $ra;
-        $query = "";
-        $query .=  "UPDATE status SET ";
-        if ($ftc == 'ET'){
-            $query .=  "ETA = '$_POST[$ra]' ";
-            ?><br \><div class="gray"><?php
-            echo 'ETA';
-            ?></div><?php
-        } elseif($ftc == 'NU') {
-            $query .= "next_update = '$_POST[$ra]' ";
-            ?><br \><?php
-            echo 'NEXT_UPDATE';
-        } elseif($ftc == 'st') {
-            ?><br \><?php
-            echo 'STATUS';
-            if($_POST[$ra] === 'on'){
-                $statProxy = 1;
-            } else {
-                $statProxy = 0;
-            }
-            $query .= "status = $statProxy ";
-        } else {
-            echo 'WE ARE HERE NOW';
-            // $query .= "status = '$_POST[$ra]' ";
-            //
-        }
-        $query .=  "WHERE id=$b;";
-        $result = mysqli_query($link, $query);
-        ?><br \><?php
-        echo 'QUERY: ' . $query;
-        ?><br \><?php
-        echo '$statProxy ' . $statProxy;
-        $query = '';
+    $substr = (substr($a, 0, 2));
+    if ($substr == 'ET'){
+        $a = 'ETA';
+    } elseif($substr = 'ne'){
+        $a = 'next_update';
+    } elseif($substr = 'st'){
+        $a = 'status';
     } else {
-        echo $a . ' ELSE';
-        $ra = $_POST[$a];
-        $ra = '';
-    }//end
+        echo 'ERROR ALERT!';
+    }
+    echo '$ftc: ' . $ftc . '<br>';//Substring first two characters
+    echo '$substr: ' . $substr . '<br>';
     ?><br \><?php
+    if (trim($c) != 'N/A'){
+        if (isset($_POST[$ra])) {
+            $query = "";
+            $query .=  "UPDATE server_status SET ";
+            $post = mysqli_real_escape_string($link, $_POST[$ra]);
+            $safe = trim($post);
+            if ($ftc == 'ET'){
+                $query .=  "ETA = \"$safe\" ";
+                ?><br \><div class="gray"><?php
+                echo 'ETA';
+            } elseif($ftc == 'NU') {
+                $query .= "next_update = '$safe'";
+            } elseif($ftc == 'st') {
+                if($_POST[$ra] === 'on'){
+                    $statProxy = '\'up\'';
+                } else {
+                    $statProxy = '\'down\'';
+                }
+                $query .= "status = $statProxy ";
+            } else {
+                echo 'WE ARE HERE NOW';
+            }
+            echo '<br>';
+            print_r($_POST);
+            echo '<br>';
+            $query .=  "WHERE id=$i;";
+            $result = mysqli_query($link, $query);
+            ?><br \><?php
+            echo 'QUERY: ' . $query . '<br>';
+            ?><br \><?php
+            // echo '$statProxy ' . $statProxy;
+            $query = '';
+        } else {
+            echo $a . ' ELSE';
+            $ra = $_POST[$a];
+            $ra = '';
+        }//end
+    }//end N/A if
+    else {
+        $c = trim($c);
+        echo "query: " . $query;
+        echo '<br> $i: ' . $i;
+        $query = "UPDATE server_status SET $a = '$c' WHERE id=$i";
+        echo "<br>query: " . $query . ' ELSE <-- <br>';
+    }
     if (!$result) {
     die("Database query failed. " . mysqli_error($link) . $link->connect_error);
     } else { //end if, start else
         if ($query != ''){
             $result = mysqli_query($link, $query);
+            echo 'Query: ' . $query . '<br>';
             echo "Successfully Submitted Query";
         } //end if
-        if($ftc == 'NU'){
-            $b++;
-        } //end if
-    } //end else
-    // if ($i % 3 === 0){
-        // $b++;
-    // } // end if
-    $i++;
+    }//end else
 } //end foreach
 
     ?> <br \> <?php
@@ -109,7 +107,7 @@ foreach ($_POST as $a => $c) { //start foreach
 </body>
 <?php  //release return data
     $i = 0;
-    if($result != ''){
+    if($result != 'false'){
         mysqli_free_result($result);
     }
  ?>
