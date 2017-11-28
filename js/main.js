@@ -1,4 +1,5 @@
-$("[name='status1']").bootstrapSwitch();
+document.load(function() {
+$("[name='status1']").bootstrapSwitch(state, true, true);
 $("[name='status2']").bootstrapSwitch();
 $("[name='status3']").bootstrapSwitch();
 $("[name='status4']").bootstrapSwitch();
@@ -10,6 +11,7 @@ $("[name='status9']").bootstrapSwitch();
 $("[name='status10']").bootstrapSwitch();
 $("[name='status11']").bootstrapSwitch();
 $("[name='status12']").bootstrapSwitch();
+});;
 
 
 // var requestURL = 'js/status.json';

@@ -1,15 +1,19 @@
 <?php require_once("./db_connect.php"); ?>
 <?php require_once("./functions.php"); ?>
-<!-- ?php require_once("./status_ns.php"); ? -->
 
 <?php
-
+    // print_r($_POST["status2"]);
     if (isset($_POST["submit"])) {
+        // $newv = $_POST["submit"];
+        // echo "\$submit: $newv";
+
         switch(true) {
             case $_POST["status1"]:
-                updateStatus('status1', $conn);
+                $number = "status1";
+                updateStatus($number, $conn);
             case $_POST["status2"]:
-                updateStatus('status2', $conn);
+                $number = "status2";
+                updateStatus($number, $conn);
             case $_POST["status3"]:
                 updateStatus('status3', $conn);
             case $_POST["status4"]:
@@ -31,9 +35,15 @@
             case $_POST["status12"]:
                 updateStatus('status12', $conn);
             case $_POST["ETAOWA"]:
+                updateETA(1, $conn);
+            case $_POST["NUOWA"]:
+                updateNU(1, $conn);
+
 
         }
-    }
+    } else {
+            echo 'UNSET $_POST["submit"]';
+        }
 ?>
 
 <!DOCTYPE html>
@@ -43,8 +53,8 @@
     <title>Form Test</title>
     <link rel="stylesheet" href="style/home/bootstrap.min.css" />
     <link rel="stylesheet" href="style/home/bootstrap-toggle.min.css">
-    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="style/bootstrap-switch.css">
+    <link rel="stylesheet" href="style/style.css">
     <script src="js/jquery-1.8.3.min.js"></script>
     <!-- <script src="js/bootstrap-toggle.min.js"></script> -->
     <script src="js/bootstrap-switch.js"></script>
@@ -380,7 +390,7 @@ global $status;
 // echo 'ETA: '         . $_POST["ETA"];
 // echo 'Next Update: ' . $_POST["next_update"];
  ?>
-<input type="submit" value="Save">
+<input type="submit" value="Save" name="submit">
 </form>
 </body>
 </html>
