@@ -3,7 +3,6 @@
     $dbuser = "sean_acls";
     $dbpass = "secretpassword";
     $dbname = "acls";
-    // $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
     $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
     //Test if connection occurred
     if(mysqli_connect_errno()) {
@@ -20,7 +19,6 @@
             //test if there was a query error
             if($conn == false){
                 //try to reconnect
-                echo "hrumph.";
             } else {
                 $test = "Connected Successfully";
             }

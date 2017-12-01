@@ -1,5 +1,5 @@
 <?php
-global $conn, $b;
+global $conn, $b, $num;
 
 function getDynamicData($column, $id) {
 	global $conn, $get_data;
@@ -10,37 +10,38 @@ function getDynamicData($column, $id) {
 		exit;
 	}
 	$row = mysqli_fetch_assoc($get_data);
-	// print_r($row[$column]);
 	return $row[$column];
 }
 
 function make_buttons($id) {
 	global $dyndat;
-	// echo $dyndat;
 	$name = "status".$id;
 	$fp   = "<input type=\"radio\" ";
-	$lp   = "value=\"up\" data-toggle=\"toggle\" name=\"$name\" data-on-color=\"success\" data-off-color=\"danger\" class=\"bootstrap-switch, bootstrap-switch-handle-on\"> ";
+	$lp   = "value=\"up\" data-toggle=\"toggle\" name=\"$name\" class=\"bootstrap-switch, bootstrap-switch-handle-on\" id=\"on\"> <label for=\"on\"><span></span>Up</label> ";
 	$fp2  = "<input type=\"radio\" ";
-	$lp2  = "value=\"down\" data-toggle=\"toggle\" name=\"$name\">";
+	$lp2  = "value=\"down\" data-togle=\"toggle\" name=\"$name\" id=\"down\"> <label for=\"down\"><span></span>Down</label>";
 	if ($dyndat == 'up') {
-		// getDynamicData('status', $id) == 'up'){
 		$fpb = ` <?php (value == 'up')?'checked':'';
  ?> `;
 
-		// echo $fp . $fpb . $lp . $fp2 . $fpb . $lp2;
 		echo $fp."checked ".$lp.$fp2.$lp2;
 	} elseif ($dyndat == 'down') {//if down
 		echo $fp.$lp.$fp2."checked ".$lp2;
 	} else {
-		echo 'ERROR';
+		echo 'error in<br>functions.php';
 	};
 }
 
 function get_status($id) {
 	global $conn, $dyndat;
 	$dyndat = getDynamicData('status', $id);
-	// print_r(getDynamicData('status', $id));
 	make_buttons($id);
+}
+
+function show_status($id) {
+	global $conn, $dyndat;
+	$dyndat = getDynamicData('status', $id);
+	echo $dyndat;
 }
 
 function updateStatus($input_name, $conn) {
@@ -51,7 +52,6 @@ function updateStatus($input_name, $conn) {
 	} else {
 		$lastchars = substr($input_name, -2);
 	}
-	// echo 'post status: ' . $status . '<br>';
 	$query = "UPDATE server_status SET status = '$status' WHERE id = $lastchars; ";
 
 	mysqli_query($conn, $query);
@@ -63,15 +63,30 @@ function get_eta($id) {
 	if ($ETA) {
 		$trimmed = trim($ETA);
 		$escaped = mysqli_real_escape_string($conn, $trimmed);
-		echo $escaped;
+		echo "value=\"$escaped\"";
 	} else {
-		echo 'N/A';
+		echo "placeholder=\"-\"";
 	}
 }
 
-function updateETA($id, $conn) {
-	$eta = get_eta($id);
-	mysqli_query($conn, "UPDATE server_status SET ETA = \'$eta\' WHERE id = $id");
+function show_eta($id) {
+	global $conn, $row, $get_data;
+	$ETA = getDynamicData('ETA', $id);
+	if ($ETA) {
+		$trimmed = trim($ETA);
+		$escaped = mysqli_real_escape_string($conn, $trimmed);
+		echo "$escaped";
+	} else {
+		echo "-";
+	}
+}
+
+function updateETA($input_name, $id) {
+	global $num, $conn;
+	// $eta = get_eta($id);
+	// echo $num;
+	$eta = $_POST[$input_name];
+	mysqli_query($conn, "UPDATE server_status SET ETA = \"$eta\" WHERE id = $id");
 }
 
 function get_next_update($id) {
@@ -80,15 +95,29 @@ function get_next_update($id) {
 	if ($NU) {
 		$trimmed = trim($NU);
 		$escaped = mysqli_real_escape_string($conn, $trimmed);
-		echo $escaped;
+		$enter   = "value=\"$escaped\"";
+		echo $enter;
 	} else {
-		echo 'N/A';
+		echo "placeholder=\"-\"";
 	}
 }
 
-function updateNU($id, $conn) {
-	$nu = get_next_update($id);
-	mysqli_query($conn, "UPDATE server_status SET NU = \'$nu\' WHERE id = $id");
+function show_next_update($id) {
+	global $conn, $row, $get_data;
+	$NU = getDynamicData('next_update', $id);
+	if ($NU) {
+		$trimmed = trim($NU);
+		$escaped = mysqli_real_escape_string($conn, $trimmed);
+		echo "$escaped";
+	} else {
+		echo "-";
+	}
+}
+
+function updateNU($input_name, $id) {
+	global $num, $conn;
+	$nu = $_POST[$input_name];
+	mysqli_query($conn, "UPDATE server_status SET next_update = \"$nu\" WHERE id = $id");
 }
 
 function string_length($string) {
@@ -113,7 +142,7 @@ function loopstatus($conn) {
 // $value = mysqli_real_escape_string($conn, $value_one);
 // if(
 // !isset($value) || empty($value)) {
-// echo "N/A";
+// echo "-";
 // } else {
 // echo $value;
 // };

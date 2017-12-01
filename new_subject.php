@@ -1,3 +1,10 @@
+<?php session_start(); // Initialize the session
+    // If session variable is not set it will redirect to login page
+    if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
+      header("location: login.php");
+      exit;
+    }
+    ?>
 <?php require_once("./db_connect.php"); ?>
 <?php require_once("./functions.php"); ?>
 
@@ -9,11 +16,9 @@
 
         switch(true) {
             case $_POST["status1"]:
-                $number = "status1";
-                updateStatus($number, $conn);
+                updateStatus('status1', $conn);
             case $_POST["status2"]:
-                $number = "status2";
-                updateStatus($number, $conn);
+                updateStatus('status2', $conn);
             case $_POST["status3"]:
                 updateStatus('status3', $conn);
             case $_POST["status4"]:
@@ -35,14 +40,56 @@
             case $_POST["status12"]:
                 updateStatus('status12', $conn);
             case $_POST["ETAOWA"]:
-                updateETA(1, $conn);
+                updateETA('ETAOWA', 1);
             case $_POST["NUOWA"]:
-                updateNU(1, $conn);
-
-
+                updateNU('NUOWA', 1);
+            case $_POST["ETAActiveSync"]:
+                updateETA('ETAActiveSync', 2);
+            case $_POST["NUActiveSync"]:
+                updateNU('NUActiveSync', 2);
+            case $_POST["ETASites"]:
+                updateETA('ETASites', 3);
+            case $_POST["NUSites"]:
+                updateNU('NUSites', 3);
+            case $_POST["ETAVPN"]:
+                updateETA('ETAVPN', 4);
+            case $_POST["NUVPN"]:
+                updateNU('NUVPN', 4);
+            case $_POST["ETACRM"]:
+                updateETA('ETACRM', 5);
+            case $_POST["NUCRM"]:
+                updateNU('NUCRM', 5);
+            case $_POST["ETAOutlook"]:
+                updateETA('ETAOutlook', 6);
+            case $_POST["NUOutlook"]:
+                updateNU('NUOutlook', 6);
+            case $_POST["ETAiOWA"]:
+                updateETA('ETAiOWA', 7);
+            case $_POST["NUiOWA"]:
+                updateNU('NUiOWA', 7);
+            case $_POST["ETAiAS"]:
+                updateETA('ETAiAS', 8);
+            case $_POST["NUiAS"]:
+                updateNU('NUiAS', 8);
+            case $_POST["ETANA"]:
+                updateETA('ETANA', 9);
+            case $_POST["NUNA"]:
+                updateNU('NUNA', 9);
+            case $_POST["ETAIA"]:
+                updateETA('ETAIA', 10);
+            case $_POST["NUIA"]:
+                updateNU('NUIA', 10);
+            case $_POST["ETACRMi"]:
+                updateETA('ETACRMi', 11);
+            case $_POST["NUCRMi"]:
+                updateNU('NUCRMi', 11);
+            case $_POST["ETAiSites"]:
+                updateETA('ETAiSites', 12);
+            case $_POST["NUiSites"]:
+                updateNU('NUiSites', 12);
         }
     } else {
-            echo 'UNSET $_POST["submit"]';
+            //echo 'UNSET $_POST["submit"]';
         }
 ?>
 
@@ -51,18 +98,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Form Test</title>
-    <link rel="stylesheet" href="style/home/bootstrap.min.css" />
-    <link rel="stylesheet" href="style/home/bootstrap-toggle.min.css">
-    <link rel="stylesheet" href="style/bootstrap-switch.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="style/home/bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" href="style/home/bootstrap-toggle.min.css"> -->
+    <!-- <link rel="stylesheet" href="style/bootstrap-switch.css"> -->
     <link rel="stylesheet" href="style/style.css">
-    <script src="js/jquery-1.8.3.min.js"></script>
-    <!-- <script src="js/bootstrap-toggle.min.js"></script> -->
-    <script src="js/bootstrap-switch.js"></script>
-    <script src="js/main.js"></script>
+
 </head>
 <body>
 
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <div class="pull-right">User: <b><?php echo $_SESSION['username']; ?></b>.</div>
 
 <!-- Add "?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?"
     (with &gt & &lt symbols) to the above form element (where now it points
@@ -76,7 +123,7 @@ global $conn, $i;
 
 <table class="table">
 
-    <caption class="h3"><img id="ACLSlogo" src="img/acls.jpg"> Current Status of ACLS IT Systems</caption>
+    <caption class="h3 text-center"><img id="ACLSlogo" src="img/acls.jpg"> Current Status of ACLS IT Systems</caption>
     <thead>
         <tr class="gray">
             <td>External Services</td>
@@ -96,18 +143,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAOWA" id="ETAOWA" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAOWA" id="ETAOWA" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUOWA" id="NUOWA" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUOWA" id="NUOWA" <?php get_next_update($i);?>>
             </td>
         </tr>
         <tr>
@@ -119,18 +158,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAActiveSync" id="ETAActiveSync" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAActiveSync" id="ETAActiveSync" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUActiveSync" id="NUActiveSync" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUActiveSync" id="NUActiveSync" <?php get_next_update($i);?>>
             </td>
         </tr>
         <tr>
@@ -142,18 +173,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETASites" id="ETASites" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETASites" id="ETASites" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUSites" id="NUSites" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUSites" id="NUSites" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -166,18 +189,10 @@ global $conn, $i;
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETAVPN" id="ETAVPN" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAVPN" id="ETAVPN" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUVPN" id="NUVPN" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUVPN" id="NUVPN" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -190,18 +205,10 @@ global $conn, $i;
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETACRM" id="ETACRM" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETACRM" id="ETACRM" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUCRM" id="NUCRM" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUCRM" id="NUCRM" <?php get_next_update($i); ?>>
             </td>
         </tr>
 
@@ -225,18 +232,10 @@ global $conn, $i;
                 <!-- <input type="checkbox" checked data-toggle="toggle"> -->
             </td>
             <td>
-                <input type="text" name="ETAOutlook" id="ETAOutlook" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAOutlook" id="ETAOutlook" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUOutlook" id="NUOutlook" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUOutlook" id="NUOutlook" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -248,18 +247,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAiOWA" id="ETAiOWA" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAiOWA" id="ETAiOWA" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUiOWA" id="NUiOWA" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUiOWA" id="NUiOWA" <?php get_next_update($i); ?>>
             </td>
 
         </tr>
@@ -272,18 +263,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAiAS" id="ETAiAS" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAiAS" id="ETAiAS" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUiAS" id="NUiAS" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUiAS" id="NUiAS" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -295,18 +278,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETANA" id="ETANA" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETANA" id="ETANA" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUNA" id="NUNA" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUNA" id="NUNA" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -318,18 +293,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAIA" id="ETAIA" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAIA" id="ETAIA" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUIA" id="NUIA" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUIA" id="NUIA" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -341,18 +308,12 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETACRMi" id="ETACRMi" value="
-                <?php
+                <input type="text" name="ETACRMi" id="ETACRMi" <?php
                     get_eta($i);
-                ?>
-                ">
+                ?>">
             </td>
             <td>
-                <input type="text" name="NUCRMi" id="NUCRMi" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUCRMi" id="NUCRMi" <?php get_next_update($i); ?>>
             </td>
         </tr>
         <tr>
@@ -364,18 +325,10 @@ global $conn, $i;
                  ?>
             </td>
             <td>
-                <input type="text" name="ETAiSites" id="ETAiSites" value="
-                <?php
-                    get_eta($i);
-                ?>
-                ">
+                <input type="text" name="ETAiSites" id="ETAiSites" <?php get_eta($i); ?>>
             </td>
             <td>
-                <input type="text" name="NUiSites" id="NUiSites" value="
-                <?php
-                    get_next_update($i);
-                ?>
-                ">
+                <input type="text" name="NUiSites" id="NUiSites" <?php get_next_update($i);?>>
             </td>
         </tr>
         <tr>
@@ -390,8 +343,15 @@ global $status;
 // echo 'ETA: '         . $_POST["ETA"];
 // echo 'Next Update: ' . $_POST["next_update"];
  ?>
-<input type="submit" value="Save" name="submit">
+<input type="submit" value="Save" name="submit" class="btn btn-success pull-left">
 </form>
+<div class="pull-right">
+    <a href="logout.php" class="btn btn-danger">Sign Out</a>
+</div>
+    <script src="./js/jquery-1.8.3.min.js"></script>
+    <!-- <script src="js/bootstrap-toggle.min.js"></script> -->
+    <script src="./js/bootstrap-switch.js"></script>
+    <script src="./s/main.js"></script>
 </body>
 </html>
 <?php $conn->close();  ?>

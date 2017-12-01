@@ -1,7 +1,8 @@
 body {
-  align-text: center;
-  margin: 0;
-  background: url("../img/bg1.jpg") no-repeat fixed center center/cover #EEEEEE; }
+  margin: 1rem;
+  padding: 1rem;
+  background: url("../img/bg1.jpg") no-repeat fixed center center/cover #EEEEEE;
+  font: 14px sans-serif; }
 
 ul {
   list-style: none; }
@@ -9,6 +10,9 @@ ul {
 td {
   padding: 1rem;
   border: 1px solid black; }
+
+input {
+  text-align: center; }
 
 .center {
   display: grid;
@@ -32,8 +36,7 @@ td {
 
 .gray {
   background-color: lightgray;
-  border-top: 3px solid black;
-  color: red; }
+  border-top: 3px solid black; }
 
 .container.header-area {
   background: url("../img/header-bg.png") no-repeat top center; }

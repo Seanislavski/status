@@ -3,8 +3,7 @@ $dbhost = "localhost";
 $dbuser = "sean_acls";
 $dbpass = "secretpassword";
 $dbname = "acls";
-// $connection = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
-$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+$conn   = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 //Test if connection occurred
 if (mysqli_connect_errno()) {
 	die("Database connection failed: ".
@@ -20,7 +19,6 @@ $result = mysqli_query($conn, $query);
 //test if there was a query error
 if ($conn == false) {
 	//try to reconnect
-	echo "hrumph.";
 } else {
 	$test = "Connected Successfully";
 }

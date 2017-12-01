@@ -1,7 +1,8 @@
 body{
-    align-text: center;
-    margin: 0;
+    margin: 1rem;
+    padding: 1rem;
     background: url("../img/bg1.jpg") no-repeat fixed center center / cover #EEEEEE;
+    font: 14px sans-serif;
 }
 ul{
     list-style: none;
@@ -10,6 +11,10 @@ td{
     padding: 1rem;
     border: 1px solid black;
 }
+input{
+    text-align: center;
+}
+
 .center{
     display: grid;
     width: 100vw;
@@ -37,7 +42,6 @@ td{
 .gray{
     background-color: lightgray;
     border-top: 3px solid black;
-    color: red;
 }
 .container.header-area{
     background:url('../img/header-bg.png') no-repeat top center;
