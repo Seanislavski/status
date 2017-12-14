@@ -1,0 +1,352 @@
+<?php session_start(); // Initialize the session
+    // If session variable is not set it will redirect to login page
+    if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
+      header("location: login.php");
+      exit;
+    }
+    ?>
+<?php require_once("./db_connect.php"); ?>
+<?php require_once("./functions.php"); ?>
+
+<?php
+    // print_r($_POST["status2"]);
+    if (isset($_POST["submit"])) {
+        // $newv = $_POST["submit"];
+        // echo "\$submit: $newv";
+
+        switch(true) {
+            case $_POST["status1"]:
+                updateStatus('status1', $conn);
+            case $_POST["status2"]:
+                updateStatus('status2', $conn);
+            case $_POST["status3"]:
+                updateStatus('status3', $conn);
+            case $_POST["status4"]:
+                updateStatus('status4', $conn);
+            case $_POST["status5"]:
+                updateStatus('status5', $conn);
+            case $_POST["status6"]:
+                updateStatus('status6', $conn);
+            case $_POST["status7"]:
+                updateStatus('status7', $conn);
+            case $_POST["status8"]:
+                updateStatus('status8', $conn);
+            case $_POST["status9"]:
+                updateStatus('status9', $conn);
+            case $_POST["status10"]:
+                updateStatus('status10', $conn);
+            case $_POST["status11"]:
+                updateStatus('status11', $conn);
+            case $_POST["status12"]:
+                updateStatus('status12', $conn);
+            case $_POST["ETAOWA"]:
+                updateETA('ETAOWA', 1);
+            case $_POST["NUOWA"]:
+                updateNU('NUOWA', 1);
+            case $_POST["ETAActiveSync"]:
+                updateETA('ETAActiveSync', 2);
+            case $_POST["NUActiveSync"]:
+                updateNU('NUActiveSync', 2);
+            case $_POST["ETASites"]:
+                updateETA('ETASites', 3);
+            case $_POST["NUSites"]:
+                updateNU('NUSites', 3);
+            case $_POST["ETAVPN"]:
+                updateETA('ETAVPN', 4);
+            case $_POST["NUVPN"]:
+                updateNU('NUVPN', 4);
+            case $_POST["ETACRM"]:
+                updateETA('ETACRM', 5);
+            case $_POST["NUCRM"]:
+                updateNU('NUCRM', 5);
+            case $_POST["ETAOutlook"]:
+                updateETA('ETAOutlook', 6);
+            case $_POST["NUOutlook"]:
+                updateNU('NUOutlook', 6);
+            case $_POST["ETAiOWA"]:
+                updateETA('ETAiOWA', 7);
+            case $_POST["NUiOWA"]:
+                updateNU('NUiOWA', 7);
+            case $_POST["ETAiAS"]:
+                updateETA('ETAiAS', 8);
+            case $_POST["NUiAS"]:
+                updateNU('NUiAS', 8);
+            case $_POST["ETANA"]:
+                updateETA('ETANA', 9);
+            case $_POST["NUNA"]:
+                updateNU('NUNA', 9);
+            case $_POST["ETAIA"]:
+                updateETA('ETAIA', 10);
+            case $_POST["NUIA"]:
+                updateNU('NUIA', 10);
+            case $_POST["ETACRMi"]:
+                updateETA('ETACRMi', 11);
+            case $_POST["NUCRMi"]:
+                updateNU('NUCRMi', 11);
+            case $_POST["ETAiSites"]:
+                updateETA('ETAiSites', 12);
+            case $_POST["NUiSites"]:
+                updateNU('NUiSites', 12);
+        }
+    } else {
+            //echo 'UNSET $_POST["submit"]';
+        }
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - status.acls.org</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="style/home/bootstrap.min.css" /> -->
+    <!-- <link rel="stylesheet" href="style/home/bootstrap-toggle.min.css"> -->
+    <!-- <link rel="stylesheet" href="style/bootstrap-switch.css"> -->
+    <link rel="stylesheet" href="style/style.css">
+</head>
+<body>
+
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <div class="pull-right status_check">Logged in as: <b><?php echo $_SESSION['username']; ?></b>.
+    <br><a href="pw_change.php" class="change_pw pull-right">Change Password</a></div>
+<!-- Add "?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?"
+    (with &gt & &lt symbols) to the above form element (where now it points
+     to db_update.php) in order to use this same page for processing the
+     form (must be above HTML)-->
+<?php //start
+global $conn, $i;
+// mysqli_ping($conn);
+?> <!-- end -->
+<table class="table">
+    <caption class="h3 text-center"><img id="ACLSlogo" src="img/acls.jpg"> Current Status of ACLS IT Systems</caption>
+    <thead>
+        <tr class="gray">
+            <td>External Services</td>
+            <td>Current Status</td>
+            <td>ETA on Return</td>
+            <td>Next Update</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>OWA (webmail)</td>
+            <td class= Status-OWA">
+                <?php
+                    global $i;
+                    $i = 1;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAOWA" id="ETAOWA" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUOWA" id="NUOWA" <?php get_next_update($i);?>>
+            </td>
+        </tr>
+        <tr>
+            <td>ActiveSync (Mobile Devices)</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAActiveSync" id="ETAActiveSync" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUActiveSync" id="NUActiveSync" <?php get_next_update($i);?>>
+            </td>
+        </tr>
+        <tr>
+            <td>ACLS Website & Portal Websites</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETASites" id="ETASites" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUSites" id="NUSites" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>VPN/Remote Network Access</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+            </td>
+            <td>
+                <input type="text" name="ETAVPN" id="ETAVPN" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUVPN" id="NUVPN" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>crm.acls.org</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+            </td>
+            <td>
+                <input type="text" name="ETACRM" id="ETACRM" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUCRM" id="NUCRM" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+
+    </tbody>
+        <thead>
+        <tr class="gray">
+            <td>Internal Services</td>
+            <td>Current Status</td>
+            <td>ETA on Return</td>
+            <td>Next Update</td>
+        </tr>
+        </thead>
+    <tbody>
+        <tr>
+            <td>Outlook Email</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+                <!-- <input type="checkbox" checked data-toggle="toggle"> -->
+            </td>
+            <td>
+                <input type="text" name="ETAOutlook" id="ETAOutlook" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUOutlook" id="NUOutlook" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>OWA (webmail)</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAiOWA" id="ETAiOWA" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUiOWA" id="NUiOWA" <?php get_next_update($i); ?>>
+            </td>
+
+        </tr>
+        <tr>
+            <td>ActiveSync (Mobile Devices)</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAiAS" id="ETAiAS" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUiAS" id="NUiAS" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>Network Access</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETANA" id="ETANA" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUNA" id="NUNA" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>Internet Access</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAIA" id="ETAIA" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUIA" id="NUIA" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>crminternal.acls.org</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETACRMi" id="ETACRMi" <?php
+                    get_eta($i);
+                ?>">
+            </td>
+            <td>
+                <input type="text" name="NUCRMi" id="NUCRMi" <?php get_next_update($i); ?>>
+            </td>
+        </tr>
+        <tr>
+            <td>ACLS Website & Portal Websites</td>
+            <td>
+                <?php
+                    $i++;
+                    get_status($i);
+                 ?>
+            </td>
+            <td>
+                <input type="text" name="ETAiSites" id="ETAiSites" <?php get_eta($i); ?>>
+            </td>
+            <td>
+                <input type="text" name="NUiSites" id="NUiSites" <?php get_next_update($i);?>>
+            </td>
+        </tr>
+        <tr>
+            <td colspan=4 class="gray h4">If you are experiencing an issue with a service not noted above, please email <a href="mailto:helpdesk@citadelny.com">helpdesk@citadelny.com</a> or call 212-931-8830.</td>
+        </tr>
+    </tbody>
+</table>
+<?php
+global $status;
+// echo 'Status: '      . $_POST['NU-CRMi'];
+// echo 'ID: '          . $_POST['id'];
+// echo 'ETA: '         . $_POST["ETA"];
+// echo 'Next Update: ' . $_POST["next_update"];
+ ?>
+<input type="submit" value="Save" name="submit" class="btn btn-success pull-left">
+</form>
+<div class="pull-right">
+    <a href="logout.php" class="btn btn-danger">Sign Out</a>
+</div>
+    <script src="./js/jquery-1.8.3.min.js"></script>
+    <!-- <script src="js/bootstrap-toggle.min.js"></script> -->
+    <script src="./js/bootstrap-switch.js"></script>
+    <script src="./s/main.js"></script>
+</body>
+</html>
+<?php $conn->close();  ?>

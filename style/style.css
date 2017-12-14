@@ -2,7 +2,10 @@ body {
   margin: 1rem;
   padding: 1rem;
   background: url("../img/bg1.jpg") no-repeat fixed center center/cover #EEEEEE;
-  font: 14px sans-serif; }
+  font: 14px sans-serif;
+  height: 100%;
+  width: 100%;
+  overflow: hidden; }
 
 ul {
   list-style: none; }
@@ -13,6 +16,39 @@ td {
 
 input {
   text-align: center; }
+
+.status_check {
+  margin-right: 2rem; }
+
+.header {
+  font-size: 2rem;
+  text-align: center;
+  margin-top: 1rem; }
+
+.status_check {
+  margin-top: 2rem;
+  margin-right: 4rem; }
+
+.inside {
+  width: 100%;
+  height: 100%;
+  border: none; }
+
+.box {
+  margin-top: 30rem;
+  justify-content: center;
+  border-radius: 1rem; }
+
+.chpw_btn {
+  padding: 4px;
+  border: 1px solid #999;
+  box-shadow: 1px 3px #555; }
+
+.pwbox {
+  padding: 1rem; }
+
+.change_pw {
+  margin-right: 8rem; }
 
 .center {
   display: grid;
@@ -31,15 +67,20 @@ input {
   border: 1px solid black;
   padding: 1rem; }
 
+.container {
+  display: flex;
+  height: 20rem;
+  width: 50rem;
+  border: 1px solid #666;
+  background-color: #FFF;
+  box-shadow: 3px 5px rgba(119, 119, 119, 0.8); }
+
 .container.footer-area {
   margin: -15px 0 -15px 0; }
 
 .gray {
   background-color: lightgray;
   border-top: 3px solid black; }
-
-.container.header-area {
-  background: url("../img/header-bg.png") no-repeat top center; }
 
 #ACLSlogo {
   height: 10rem;

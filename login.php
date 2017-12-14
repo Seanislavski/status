@@ -43,7 +43,7 @@
                                 save the username to the session */
                                 // session_start();
                                 $_SESSION['username'] = $username;
-                                header("location: new_subject.php");
+                                header("location: admin.php");
                             } else{
                                 // Display an error message if password is not valid
                                 $password_err = 'The password you entered was not valid.';
